@@ -1,6 +1,6 @@
 # YouTube Video Scraper
 
-Scrapes video with ID, and `title`, `description`, `channel` and `gameName` (if it's a game video)
+Scrapes video data with ID, and returns `title`, `description`, `channel` and `gameName` (if it's a game video)
 
 ## Getting Started
 
