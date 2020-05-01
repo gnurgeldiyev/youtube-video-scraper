@@ -38,10 +38,10 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
     expect(res.statusCode).toEqual(expectedResult.statusCode)
     expect(res.body).toEqual({
       status: true,
-      title: expect.stringMatching(/.+/),
+      title: 'Fortnite World Cup Solo Finals - Full Match (Bugha)',
       description: expect.stringMatching(/.+/),
-      channel: expect.stringMatching(/.+/),
-      gameName: expect.stringMatching(/.+/)
+      channel: 'IGN',
+      gameName: 'Fortnite'
     })
   })
 
@@ -55,10 +55,10 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
     expect(res.statusCode).toEqual(expectedResult.statusCode)
     expect(res.body).toEqual({
       status: true,
-      title: expect.stringMatching(/.+/),
+      title: 'Bugha - Stories from the Battle Bus',
       description: expect.stringMatching(/.+/),
-      channel: expect.stringMatching(/.+/),
-      gameName: expect.stringMatching(/.+/)
+      channel: 'Fortnite',
+      gameName: 'Fortnite'
     })
   })
 
@@ -72,9 +72,9 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
     expect(res.statusCode).toEqual(expectedResult.statusCode)
     expect(res.body).toEqual({
       status: true,
-      title: expect.stringMatching(/.+/),
+      title: 'Google — Year in Search 2019',
       description: expect.stringMatching(/.+/),
-      channel: expect.stringMatching(/.+/)
+      channel: 'Google'
     })
   })
 })
