@@ -47,18 +47,18 @@ module.exports = async function getVideoData(req, res) {
     const title = await (await elements[0].getProperty('textContent')).jsonValue()
     const description = await (await elements[1].getProperty('textContent')).jsonValue()
     const channel = await (await elements[2].getProperty('textContent')).jsonValue()
-    let gameName = ''
-    if (elements[3]) {
-      gameName = await (await elements[3].getProperty('textContent')).jsonValue()
-    }
-
     body = {
       status: true,
       title: title.trim(),
       description: description.trim(),
-      channel: channel.trim(),
-      gameName: gameName.trim()
+      channel: channel.trim()
     }
+    // if video has game card in description
+    if (elements[3]) {
+      const gameName = await (await elements[3].getProperty('textContent')).jsonValue()
+      body.gameName = gameName
+    }
+
     browser.close()
   } catch (err) {
     return res.status(500).json(err)
