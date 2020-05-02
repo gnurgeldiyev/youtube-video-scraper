@@ -7,10 +7,10 @@
     "node": ">= 12.14.1"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "eslint --ext .js --ignore-path .gitignore ./test",
-    "test": "jest"
+    "test": "cross-env NODE_ENV=test jest"
   },
   "lint-staged": {
     "./**/*.js": [
@@ -32,6 +32,7 @@
     "puppeteer": "^3.0.2"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-node": "^4.0.0",
