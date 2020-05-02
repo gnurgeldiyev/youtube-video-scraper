@@ -9,7 +9,7 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
     api = await request(server)
   })
 
-  afterAll(() => {
+  afterAll((done) => {
     done()
   })
 
@@ -76,5 +76,20 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
       description: expect.stringMatching(/.+/),
       channel: 'Google'
     })
+  })
+
+  test('Video #4 - should return 404', async () => {
+    const videoId = '12345678901'
+    const expectedResult = {
+      statusCode: 404,
+      body: {
+        status: false,
+        message: 'Video not found with this id'
+      }
+    }
+    const res = await api.get(`/${videoId}`).set('Accept', 'application/json')
+
+    expect(res.statusCode).toEqual(expectedResult.statusCode)
+    expect(res.body).toEqual(expectedResult.body)
   })
 })

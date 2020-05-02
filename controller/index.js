@@ -44,6 +44,16 @@ module.exports = async function getVideoData(req, res) {
       page.$(selectors.channel),
       page.$(selectors.gameName)
     ])
+    /**
+     * if page has not any title
+     * then it means, this video is not avaliable
+     */
+    if (!elements[0]) {
+      return res.status(404).json({
+        status: false,
+        message: 'Video not found with this id'
+      })
+    }
     const title = await (await elements[0].getProperty('textContent')).jsonValue()
     const description = await (await elements[1].getProperty('textContent')).jsonValue()
     const channel = await (await elements[2].getProperty('textContent')).jsonValue()
@@ -59,7 +69,7 @@ module.exports = async function getVideoData(req, res) {
       body.gameName = gameName
     }
 
-    browser.close()
+    await browser.close()
   } catch (err) {
     return res.status(500).json(err)
   }
