@@ -8,17 +8,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Clone the repo in your environment
 
 ```bash
 git clone https://github.com/gnurgeldiyev/youtube-video-scraper.git
 ```
 
 ### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
 
 ```bash
 # move into project folder
@@ -40,14 +36,6 @@ nano .env
 yarn start
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-```bash
-yarn test
-```
-
 ## Example
 
 ```bash
@@ -65,6 +53,12 @@ curl localhost:3000/h8OX0FNWANM
   "channel": "GoogleDoodles",
   "gameName": ""
 }
+```
+
+## Running the tests
+
+```bash
+yarn test
 ```
 
 ## Built With
