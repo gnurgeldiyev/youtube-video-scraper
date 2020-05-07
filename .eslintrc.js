@@ -39,6 +39,7 @@ module.exports = {
     'eqeqeq': 'off',
     'comma-dangle': 'off',
     'semi': 'off',
+    'linebreak-style': ["error", "windows"],
     'no-use-before-define': ['error', {
       'functions': false
     }],

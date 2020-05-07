@@ -41,6 +41,7 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
       title: 'Fortnite World Cup Solo Finals - Full Match (Bugha)',
       description: expect.stringMatching(/.+/),
       channel: 'IGN',
+      views: expect.stringMatching(/[1-9]/g),
       gameName: 'Fortnite'
     })
   })
@@ -58,6 +59,7 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
       title: 'Bugha - Stories from the Battle Bus',
       description: expect.stringMatching(/.+/),
       channel: 'Fortnite',
+      views: expect.stringMatching(/[1-9]/g),
       gameName: 'Fortnite'
     })
   })
@@ -74,7 +76,8 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
       status: true,
       title: 'Google — Year in Search 2019',
       description: expect.stringMatching(/.+/),
-      channel: 'Google'
+      channel: 'Google',
+      views: expect.stringMatching(/[1-9]/g)
     })
   })
 

@@ -4,6 +4,7 @@ const selectors = {
   title: 'div#info-contents div#container > h1.title',
   description: 'div#meta div#content div#description',
   channel: 'div#meta div#upload-info div#text-container',
+  views: 'div#info-contents div#container div#count span',
   gameName: 'div#meta div#contents div#title'
 }
 
@@ -42,6 +43,7 @@ module.exports = async function getVideoData(req, res) {
       page.$(selectors.title),
       page.$(selectors.description),
       page.$(selectors.channel),
+      page.$(selectors.views),
       page.$(selectors.gameName)
     ])
     /**
@@ -57,15 +59,20 @@ module.exports = async function getVideoData(req, res) {
     const title = await (await elements[0].getProperty('textContent')).jsonValue()
     const description = await (await elements[1].getProperty('textContent')).jsonValue()
     const channel = await (await elements[2].getProperty('textContent')).jsonValue()
+    const views = await (await elements[3].getProperty('textContent')).jsonValue()
+
+    // parse views and return the only amount of views
+    const numberOfViews = views.match(/\d+/g).join('')
     body = {
       status: true,
       title: title.trim(),
       description: description.trim(),
-      channel: channel.trim()
+      channel: channel.trim(),
+      views: numberOfViews
     }
     // if video has game card in description
-    if (elements[3]) {
-      const gameName = await (await elements[3].getProperty('textContent')).jsonValue()
+    if (elements[4]) {
+      const gameName = await (await elements[4].getProperty('textContent')).jsonValue()
       body.gameName = gameName
     }
 
