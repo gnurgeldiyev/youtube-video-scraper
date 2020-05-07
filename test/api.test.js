@@ -34,16 +34,14 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
       statusCode: 200
     }
     const res = await api.get(`/${videoId}`).set('Accept', 'application/json')
-    const expectedViews = res.body.views
-    delete res.body.views
 
     expect(res.statusCode).toEqual(expectedResult.statusCode)
-    expect(expectedViews).toBeGreaterThanOrEqual(3404844)
     expect(res.body).toEqual({
       status: true,
       title: 'Fortnite World Cup Solo Finals - Full Match (Bugha)',
       description: expect.stringMatching(/.+/),
       channel: 'IGN',
+      views: expect.stringMatching(/[1-9]/g),
       gameName: 'Fortnite'
     })
   })
@@ -54,16 +52,14 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
       statusCode: 200
     }
     const res = await api.get(`/${videoId}`).set('Accept', 'application/json')
-    const expectedViews = res.body.views
-    delete res.body.views
 
     expect(res.statusCode).toEqual(expectedResult.statusCode)
-    expect(expectedViews).toBeGreaterThanOrEqual(9428833)
     expect(res.body).toEqual({
       status: true,
       title: 'Bugha - Stories from the Battle Bus',
       description: expect.stringMatching(/.+/),
       channel: 'Fortnite',
+      views: expect.stringMatching(/[1-9]/g),
       gameName: 'Fortnite'
     })
   })
@@ -74,16 +70,14 @@ describe('GET /{videoId} - Youtube Video Scraper', () => {
       statusCode: 200
     }
     const res = await api.get(`/${videoId}`).set('Accept', 'application/json')
-    const expectedViews = res.body.views
-    delete res.body.views
 
     expect(res.statusCode).toEqual(expectedResult.statusCode)
-    expect(expectedViews).toBeGreaterThanOrEqual(153017500)
     expect(res.body).toEqual({
       status: true,
       title: 'Google — Year in Search 2019',
       description: expect.stringMatching(/.+/),
-      channel: 'Google'
+      channel: 'Google',
+      views: expect.stringMatching(/[1-9]/g)
     })
   })
 

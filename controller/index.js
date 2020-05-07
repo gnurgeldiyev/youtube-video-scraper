@@ -2,19 +2,10 @@ const puppeteer = require('puppeteer')
 
 const selectors = {
   title: 'div#info-contents div#container > h1.title',
-  views: 'div#info-contents div#container div#count span',
   description: 'div#meta div#content div#description',
   channel: 'div#meta div#upload-info div#text-container',
+  views: 'div#info-contents div#container div#count span',
   gameName: 'div#meta div#contents div#title'
-}
-
-function coerceIntoNumber(views) {
-  let pureViews = views.split(' ')[0]
-  const countDots = pureViews.match(/\./gi)
-  for (let i = 0; i < countDots.length; i++) {
-    pureViews = pureViews.replace('.', '');
-  }
-  return Number(pureViews)
 }
 
 module.exports = async function getVideoData(req, res) {
@@ -50,9 +41,9 @@ module.exports = async function getVideoData(req, res) {
 
     const elements = await Promise.all([
       page.$(selectors.title),
-      page.$(selectors.views),
       page.$(selectors.description),
       page.$(selectors.channel),
+      page.$(selectors.views),
       page.$(selectors.gameName)
     ])
     /**
@@ -66,18 +57,18 @@ module.exports = async function getVideoData(req, res) {
       })
     }
     const title = await (await elements[0].getProperty('textContent')).jsonValue()
-    const views = await (await elements[1].getProperty('textContent')).jsonValue()
-    const description = await (await elements[2].getProperty('textContent')).jsonValue()
-    const channel = await (await elements[3].getProperty('textContent')).jsonValue()
+    const description = await (await elements[1].getProperty('textContent')).jsonValue()
+    const channel = await (await elements[2].getProperty('textContent')).jsonValue()
+    const views = await (await elements[3].getProperty('textContent')).jsonValue()
 
-    // parse views data and return exact number
-    const viewsNumber = coerceIntoNumber(views)
+    // parse views and return the only amount of views
+    const numberOfViews = views.match(/\d+/g).join('')
     body = {
       status: true,
       title: title.trim(),
       description: description.trim(),
       channel: channel.trim(),
-      views: viewsNumber
+      views: numberOfViews
     }
     // if video has game card in description
     if (elements[4]) {
