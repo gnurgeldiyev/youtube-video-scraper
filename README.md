@@ -51,7 +51,7 @@ curl localhost:3000/h8OX0FNWANM
   "title": "Recognizing Ignaz Semmelweis and Handwashing",
   "description": "Today’s Doodle follows the official guidelines ...",
   "channel": "GoogleDoodles",
-  "gameName": ""
+  "views": "56188961"
 }
 ```
 
