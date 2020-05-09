@@ -1,44 +1,23 @@
 const puppeteer = require('puppeteer')
-
-const selectors = {
-  title: 'div#info-contents div#container > h1.title',
-  description: 'div#meta div#content div#description',
-  channel: 'div#meta div#upload-info div#text-container',
-  views: 'div#info-contents div#container div#count span',
-  gameName: 'div#meta div#contents div#title'
-}
+const WebPage = require('../helper/webPage')
+const getTexts = require('../helper/getTexts')
+const {
+  BROWSER_ARGS: args,
+  SELECTORS: selectors
+} = require('../config')
 
 module.exports = async function getVideoData(req, res) {
   const { videoId } = req.params
   const url = `https://www.youtube.com/watch?v=${videoId}`
-  const videoIdRgx = new RegExp('[a-zA-Z0-9_-]{11}')
-  let body = {}
-  // validate the video id
-  if (videoId.length != 11 || !videoIdRgx.test(videoId)) {
-    return res.status(400).json({
-      status: false,
-      message: 'Invalid video id'
-    })
-  }
+  let body
+  let browser
   try {
-    const args = [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-infobars',
-      '--window-position=0,0',
-      '--ignore-certifcate-errors',
-      '--ignore-certifcate-errors-spki-list',
-      '--user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3312.0 Safari/537.36"'
-    ]
-    const options = {
-      args,
-      headless: true,
-      ignoreHTTPSErrors: true
-    }
-    const browser = await puppeteer.launch(options)
-    const page = await browser.newPage()
-    await page.goto(url)
-
+    browser = await puppeteer.launch({ args })
+    let page = new WebPage(browser, url)
+    page = await page.load()
+    /**
+     * select elements
+     */
     const elements = await Promise.all([
       page.$(selectors.title),
       page.$(selectors.description),
@@ -47,38 +26,41 @@ module.exports = async function getVideoData(req, res) {
       page.$(selectors.gameName)
     ])
     /**
-     * if page has not any title
-     * then it means, this video is not avaliable
+     * every video should have
+     * title, desc, channel and views
      */
-    if (!elements[0]) {
+    if (elements.slice(0, 4).filter((el) => el == null).length) {
       return res.status(404).json({
         status: false,
         message: 'Video not found with this id'
       })
     }
-    const title = await (await elements[0].getProperty('textContent')).jsonValue()
-    const description = await (await elements[1].getProperty('textContent')).jsonValue()
-    const channel = await (await elements[2].getProperty('textContent')).jsonValue()
-    const views = await (await elements[3].getProperty('textContent')).jsonValue()
+    /**
+     * grab the text value of each element
+     */
+    const [
+      title,
+      description,
+      channel,
+      views
+    ] = await getTexts(elements.slice(0, 4))
 
-    // parse views and return the only amount of views
-    const numberOfViews = views.match(/\d+/g).join('')
     body = {
       status: true,
-      title: title.trim(),
-      description: description.trim(),
-      channel: channel.trim(),
-      views: numberOfViews
+      title,
+      description,
+      channel,
+      views: views.match(/\d+/g).join('')
     }
-    // if video has game card in description
+    // attach game name if it is available
     if (elements[4]) {
-      const gameName = await (await elements[4].getProperty('textContent')).jsonValue()
+      const [gameName] = await getTexts(elements.slice(-1))
       body.gameName = gameName
     }
-
-    await browser.close()
   } catch (err) {
     return res.status(500).json(err)
+  } finally {
+    await browser.close()
   }
 
   return res.status(200).json(body)
