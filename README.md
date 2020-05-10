@@ -1,12 +1,15 @@
-# YouTube Video Scraper
+# Building a YouTube Scraper REST API with Puppeteer by following the TDD approach
 
-Scrapes video data with ID, and returns `title`, `description`, `channel`, `views` and `gameName` (if it's a game video)
+Scrapes YouTube video data with ID, and returns `title`, `description`, `channel`, `views` and `gameName` (if it's a game video)
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
+
+- Installed local [Node.js](https://nodejs.org/) environment
+- Package manager to install packages. [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
 
 Clone the repo in your environment
 
